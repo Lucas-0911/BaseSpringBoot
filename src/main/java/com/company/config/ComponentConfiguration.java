@@ -27,9 +27,8 @@ public class ComponentConfiguration {
 	@Bean
 	  public OpenAPI myOpenAPI() {
 			Contact contact = new Contact()
-					.email("info@duyngocit.com.vn")
-					.name("DuyNgocIT")
-					.url("https://www.facebook.com/duyngocit");
+					.email("phuclq0911@gmail.com")
+					.name("PhucLQ");
 
 			License license = new License()
 					.name("Apache 2.0")
@@ -69,7 +68,7 @@ public class ComponentConfiguration {
 	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
+		return new BCryptPasswordEncoder(12);
 	}
 
 }
