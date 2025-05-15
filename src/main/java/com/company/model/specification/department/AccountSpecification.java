@@ -1,109 +1,107 @@
 package com.company.model.specification.department;
 
-import java.util.Date;
-
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.util.StringUtils;
-
 import com.company.model.entity.Account;
 import com.company.model.form.department.AccountFilterForm;
-
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.util.StringUtils;
+
+import java.util.Date;
 
 public class AccountSpecification {
 
-	@SuppressWarnings("deprecation")
-	public static Specification<Account> buildWhere(Integer departmentId, AccountFilterForm form) {
+    @SuppressWarnings("deprecation")
+    public static Specification<Account> buildWhere(Integer departmentId, AccountFilterForm form) {
 
-		Specification<Account> where = Specification.where(new CustomSpecification("departmentId", departmentId));
-		
-		if (form == null) return where;
+        Specification<Account> where = Specification.where(new CustomSpecification("departmentId", departmentId));
 
-		if (form.getQ() != null && !StringUtils.isEmpty(form.getQ().trim())) {
-			String search = form.getQ().trim();
-			CustomSpecification usernameSpecification = new CustomSpecification("username", search);
-			CustomSpecification fullnameSpecification = new CustomSpecification("fullname", search);
-			where = where.and(usernameSpecification.or(fullnameSpecification));
-		}
+        if (form == null) return where;
 
-		if (form.getMinCreatedDate() != null) {
-			CustomSpecification minCreatedDateSpecification = new CustomSpecification("minCreatedDate", form.getMinCreatedDate());
-			where = where.and(minCreatedDateSpecification);
-		}
+        if (form.getQ() != null && !StringUtils.isEmpty(form.getQ().trim())) {
+            String search = form.getQ().trim();
+            CustomSpecification usernameSpecification = new CustomSpecification("username", search);
+            CustomSpecification fullnameSpecification = new CustomSpecification("fullname", search);
+            where = where.and(usernameSpecification.or(fullnameSpecification));
+        }
 
-		if (form.getMaxCreatedDate() != null) {
-			CustomSpecification maxCreatedDateSpecification = new CustomSpecification("maxCreatedDate", form.getMaxCreatedDate());
-			where = where.and(maxCreatedDateSpecification);
-		}
+        if (form.getMinCreatedDate() != null) {
+            CustomSpecification minCreatedDateSpecification = new CustomSpecification("minCreatedDate", form.getMinCreatedDate());
+            where = where.and(minCreatedDateSpecification);
+        }
 
-		if (form.getRole() != null) {
-			CustomSpecification roleSpecification = new CustomSpecification("role", form.getRole());
-			where = where.and(roleSpecification);
-		}
-		
-		if (form.getStatus() != null) {
-			CustomSpecification statusSpecification = new CustomSpecification("status", form.getStatus());
-			where = where.and(statusSpecification);
-		}
+        if (form.getMaxCreatedDate() != null) {
+            CustomSpecification maxCreatedDateSpecification = new CustomSpecification("maxCreatedDate", form.getMaxCreatedDate());
+            where = where.and(maxCreatedDateSpecification);
+        }
 
-		return where;
-	}
+        if (form.getRole() != null) {
+            CustomSpecification roleSpecification = new CustomSpecification("role", form.getRole());
+            where = where.and(roleSpecification);
+        }
 
-	@SuppressWarnings("serial")
-	@RequiredArgsConstructor
-	static class CustomSpecification implements Specification<Account> {
+        if (form.getStatus() != null) {
+            CustomSpecification statusSpecification = new CustomSpecification("status", form.getStatus());
+            where = where.and(statusSpecification);
+        }
 
-		@NonNull
-		private String field;
+        return where;
+    }
 
-		@NonNull
-		private Object value;
+    @SuppressWarnings("serial")
+    @RequiredArgsConstructor
+    static class CustomSpecification implements Specification<Account> {
 
-		@Override
-		public Predicate toPredicate(
-				Root<Account> root, 
-				CriteriaQuery<?> query, 
-				CriteriaBuilder criteriaBuilder) {
+        @NonNull
+        private String field;
 
-			if (field.equalsIgnoreCase("departmentId")) {
-				return criteriaBuilder.like(root.get("department").get("id"), value.toString());
-			}
-			
-			if (field.equalsIgnoreCase("username")) {
-				return criteriaBuilder.like(root.get("username"), "%" + value.toString() + "%");
-			}
-			
-			if (field.equalsIgnoreCase("fullname")) {
-				return criteriaBuilder.like(root.get("fullname"), "%" + value.toString() + "%");
-			}
-			
-			if (field.equalsIgnoreCase("minCreatedDate")) {
-				return criteriaBuilder.greaterThanOrEqualTo(
-						root.get("createdDateTime").as(java.sql.Date.class), 
-						(Date) value);
-			}
+        @NonNull
+        private Object value;
 
-			if (field.equalsIgnoreCase("maxCreatedDate")) {
-				return criteriaBuilder.lessThanOrEqualTo(
-						root.get("createdDateTime").as(java.sql.Date.class), 
-						(Date) value);
-			}
+        @Override
+        public Predicate toPredicate(
+                Root<Account> root,
+                CriteriaQuery<?> query,
+                CriteriaBuilder criteriaBuilder) {
 
-			if (field.equalsIgnoreCase("role")) {
-				return criteriaBuilder.equal(root.get("role"), value);
-			}
+            if (field.equalsIgnoreCase("departmentId")) {
+                return criteriaBuilder.like(root.get("department").get("id"), value.toString());
+            }
 
-			if (field.equalsIgnoreCase("status")) {
-				return criteriaBuilder.equal(root.get("status"), value);
-			}
+            if (field.equalsIgnoreCase("username")) {
+                return criteriaBuilder.like(root.get("username"), "%" + value.toString() + "%");
+            }
 
-			return null;
-		}
-	}
+            if (field.equalsIgnoreCase("fullname")) {
+                return criteriaBuilder.like(root.get("fullname"), "%" + value.toString() + "%");
+            }
+
+            if (field.equalsIgnoreCase("minCreatedDate")) {
+                return criteriaBuilder.greaterThanOrEqualTo(
+                        root.get("createdDateTime").as(java.sql.Date.class),
+                        (Date) value);
+            }
+
+            if (field.equalsIgnoreCase("maxCreatedDate")) {
+                return criteriaBuilder.lessThanOrEqualTo(
+                        root.get("createdDateTime").as(java.sql.Date.class),
+                        (Date) value);
+            }
+
+            if (field.equalsIgnoreCase("role")) {
+                return criteriaBuilder.equal(root.get("role"), value);
+            }
+
+            if (field.equalsIgnoreCase("status")) {
+                return criteriaBuilder.equal(root.get("status"), value);
+            }
+
+            return null;
+        }
+    }
 
 }

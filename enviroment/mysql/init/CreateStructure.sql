@@ -101,7 +101,7 @@ VALUES
 -- password: 123456
 INSERT INTO  `account`  (	firstname,			lastname, 			email, 						username,									`password`, 									`status`,		department_id, 	`role`,			created_date_time		,		updated_date_time )
 VALUES
-    (	N'Nguyễn Ngọc',		N'Duy',			'duynn03@gmail.com',			'duynn03',				'$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi',			1,				6,			'Admin',		'2019-10-01 12:45:56'	,	'2019-10-01 12:45:56'),
+    (	N'Le Quang',		N'Phuc',			'phuclq0911@gmail.com',			'phuclq',				'$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi',			1,				6,			'Admin',		'2019-10-01 12:45:56'	,	'2019-10-01 12:45:56'),
     (	N'Trần Văn',		N'Thiết',		'thiettv98@gmail.com',			'thiettv98',			'$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi',			1,				3,			'Employee',		'2020-11-02 12:45:56'	,	'2020-11-02 12:45:56'),
     (	N'Nguyễn Thế',		N'Đức',			'ntd19795@gmail.com',			'duc.nguyenthe',		'$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi',			1,				4,			'Manager',		'2017-05-09 12:45:56'	,	'2017-05-09 12:45:56'),
     (	N'Vũ Hoàng',		N'Hiệp',		'Vuhoanghiepnb@gmail.com',		'hiep.vuhoang',			'$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi',			1,				3,			'Employee',		'2016-04-09 12:45:56'	,	'2016-04-09 12:45:56'),
