@@ -12,5 +12,5 @@ public interface ITokenRepository extends JpaRepository<Token, Integer> {
 	@Modifying
 	void deleteByTypeAndAccount(Type type, Account account);
 
-	Token findBykeyAndType(String key, Type type);
+	Token findByKeyAndType(String key, Type type);
 }
