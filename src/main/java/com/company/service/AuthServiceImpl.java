@@ -1,12 +1,5 @@
 package com.company.service;
 
-import java.util.Date;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.company.config.security.AccountBlockException;
 import com.company.config.security.SecurityUtils;
 import com.company.model.dto.auth.LoginInfoDTO;
@@ -17,6 +10,12 @@ import com.company.model.form.account.CreatingAccountForm;
 import com.company.model.form.auth.ChangePasswordForm;
 import com.company.model.form.auth.ResetPasswordForm;
 import com.company.repository.IAccountRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 
 @Service
 @Transactional
@@ -48,10 +47,10 @@ public class AuthServiceImpl extends BaseService implements AuthService {
 		// get entity
 		Account entity = accountService.getAccountByUsername(username);
 
-		if(entity.getStatus() == Status.BLOCK) {
+		if (entity.getStatus() == Status.BLOCK) {
 			throw new AccountBlockException("Your account is blocked!");
 		}
-		
+
 		// convert entity to dto
 		LoginInfoDTO dto = convertObjectToObject(entity, LoginInfoDTO.class);
 

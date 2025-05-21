@@ -8,19 +8,19 @@ import com.company.model.form.auth.ResetPasswordForm;
 
 public interface AuthService {
 
-	LoginInfoDTO login(String username) throws AccountBlockException;
+    LoginInfoDTO login(String username) throws AccountBlockException;
 
-	void createAccount(CreatingAccountForm form);
+    void createAccount(CreatingAccountForm form);
 
-	void sendAccountRegistrationTokenViaEmail(String username);
+    void sendAccountRegistrationTokenViaEmail(String username);
 
-	void activeAccount(String registrationToken);
+    void activeAccount(String registrationToken);
 
-	void sendAccountForgotPasswordTokenViaEmail(String usernameOrEmail);
+    void sendAccountForgotPasswordTokenViaEmail(String usernameOrEmail);
 
-	String getUsernameFromForgotPasswordToken(String forgotPasswordToken);
-	
-	void resetPassword(ResetPasswordForm form);
+    String getUsernameFromForgotPasswordToken(String forgotPasswordToken);
 
-	void changePassword(ChangePasswordForm form);
+    void resetPassword(ResetPasswordForm form);
+
+    void changePassword(ChangePasswordForm form);
 }

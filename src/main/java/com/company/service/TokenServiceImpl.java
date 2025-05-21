@@ -46,7 +46,7 @@ public class TokenServiceImpl extends BaseService implements TokenService {
 
 	@Override
 	public boolean isRegistrationTokenValid(String registrationToken) {
-		Token entity = tokenRepository.findBykeyAndType(registrationToken, Type.REGISTER);
+		Token entity = tokenRepository.findByKeyAndType(registrationToken, Type.REGISTER);
 		if (entity == null || entity.getExpiredDateTime().before(new Date())) {
 			return false;
 		}
@@ -55,12 +55,12 @@ public class TokenServiceImpl extends BaseService implements TokenService {
 	
 	@Override
 	public Token getRegistrationTokenByKey(String key) {
-		return tokenRepository.findBykeyAndType(key, Type.REGISTER);
+		return tokenRepository.findByKeyAndType(key, Type.REGISTER);
 	}
 
 	@Override
 	public boolean isForgotPasswordTokenValid(String forgotPasswordToken) {
-		Token entity = tokenRepository.findBykeyAndType(forgotPasswordToken, Type.FORGOT_PASSWORD);
+		Token entity = tokenRepository.findByKeyAndType(forgotPasswordToken, Type.FORGOT_PASSWORD);
 		if (entity == null || entity.getExpiredDateTime().before(new Date())) {
 			return false;
 		}
@@ -89,6 +89,6 @@ public class TokenServiceImpl extends BaseService implements TokenService {
 
 	@Override
 	public Token getForgotPasswordTokenByKey(String key) {
-		return tokenRepository.findBykeyAndType(key, Type.FORGOT_PASSWORD);
+		return tokenRepository.findByKeyAndType(key, Type.FORGOT_PASSWORD);
 	}
 }

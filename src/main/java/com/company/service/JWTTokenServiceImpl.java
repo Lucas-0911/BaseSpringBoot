@@ -114,7 +114,7 @@ public class JWTTokenServiceImpl extends BaseService implements JWTTokenService{
 	
 	@Override
 	public boolean isRefreshTokenValid(String refreshToken) {
-		Token entity = tokenRepository.findBykeyAndType(refreshToken, Type.REFRESH_TOKEN);
+		Token entity = tokenRepository.findByKeyAndType(refreshToken, Type.REFRESH_TOKEN);
 		if (entity == null || entity.getExpiredDateTime().before(new Date())) {
 			return false;
 		}
@@ -125,7 +125,7 @@ public class JWTTokenServiceImpl extends BaseService implements JWTTokenService{
 	@Transactional
 	public TokenDTO getNewToken(String refreshToken) {
 		// find old refresh token
-		Token oldRefreshToken = tokenRepository.findBykeyAndType(refreshToken, Type.REFRESH_TOKEN);
+		Token oldRefreshToken = tokenRepository.findByKeyAndType(refreshToken, Type.REFRESH_TOKEN);
 
 		// delete old refresh token
 		tokenRepository.deleteByTypeAndAccount(Type.REFRESH_TOKEN, oldRefreshToken.getAccount());
