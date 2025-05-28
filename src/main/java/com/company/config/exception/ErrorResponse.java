@@ -10,17 +10,17 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ErrorResponse {
 
-	@NonNull
-	private String message;
+    @NonNull
+    private String message;
 
-	@NonNull
-	private String detailMessage;
+    @NonNull
+    private String detailMessage;
 
-	@NonNull
-	private Integer code;
+    @NonNull
+    private Integer code;
 
-	private String moreInformation;
+    private String moreInformation;
 
-	@NonNull
-	private Object exception;
+    @NonNull
+    private Object exception;
 }

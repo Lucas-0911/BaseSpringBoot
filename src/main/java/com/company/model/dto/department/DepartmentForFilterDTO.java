@@ -6,6 +6,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class DepartmentForFilterDTO {
-	private int id;
-	private String name;
+    private int id;
+    private String name;
 }

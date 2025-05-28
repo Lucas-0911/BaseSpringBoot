@@ -1,11 +1,5 @@
 package com.company.model.entity;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-
-import org.hibernate.annotations.CreationTimestamp;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -22,6 +16,11 @@ import jakarta.persistence.TemporalType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -30,48 +29,48 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class Department implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Column(name = "id")
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Column(name = "id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@Column(name = "`name`", nullable = false, unique = true, length = 100)
-	private String name;
+    @Column(name = "`name`", nullable = false, unique = true, length = 100)
+    private String name;
 
-	@Column(name = "member_size", nullable = false)
-	private Integer memberSize;
+    @Column(name = "member_size", nullable = false)
+    private Integer memberSize;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "manager_id")
-	private Account manager;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "manager_id")
+    private Account manager;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "creator_id", referencedColumnName = "id")
-	private Account creator;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "creator_id", referencedColumnName = "id")
+    private Account creator;
 
-	@Column(name = "created_date_time")
-	@Temporal(TemporalType.TIMESTAMP)
-	@CreationTimestamp
-	private Date createdDateTime;
+    @Column(name = "created_date_time")
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp
+    private Date createdDateTime;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "modifier_id", referencedColumnName = "id")
-	private Account modifier;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "modifier_id", referencedColumnName = "id")
+    private Account modifier;
 
-	@Column(name = "updated_date_time")
-	@Temporal(TemporalType.TIMESTAMP)
-	@CreationTimestamp
-	private Date updatedDateTime;
+    @Column(name = "updated_date_time")
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp
+    private Date updatedDateTime;
 
-	@OneToMany(mappedBy = "department")
-	private List<Account> accounts;
+    @OneToMany(mappedBy = "department")
+    private List<Account> accounts;
 
-	@PrePersist
-	public void setDefault() {
-		if (memberSize == null) {
-			memberSize = 0;
-		}
-	}
+    @PrePersist
+    public void setDefault() {
+        if (memberSize == null) {
+            memberSize = 0;
+        }
+    }
 }

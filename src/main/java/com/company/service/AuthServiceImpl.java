@@ -21,131 +21,131 @@ import java.util.Date;
 @Transactional
 public class AuthServiceImpl extends BaseService implements AuthService {
 
-	@Autowired
-	private JWTTokenService jwtTokenService;
+    @Autowired
+    private JWTTokenService jwtTokenService;
 
-	@Autowired
-	private AccountService accountService;
-	
-	@Autowired
-	private TokenService tokenService;
-	
-	@Autowired
-	private EmailService emailService;
-	
-	@Autowired
-	private IAccountRepository accountRepository;
-	
-	@Autowired
-	private SecurityUtils securityUtils;
-	
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+    @Autowired
+    private AccountService accountService;
 
-	@Override
-	public LoginInfoDTO login(String username) throws AccountBlockException {
-		// get entity
-		Account entity = accountService.getAccountByUsername(username);
+    @Autowired
+    private TokenService tokenService;
 
-		if (entity.getStatus() == Status.BLOCK) {
-			throw new AccountBlockException("Your account is blocked!");
-		}
+    @Autowired
+    private EmailService emailService;
 
-		// convert entity to dto
-		LoginInfoDTO dto = convertObjectToObject(entity, LoginInfoDTO.class);
+    @Autowired
+    private IAccountRepository accountRepository;
 
-		// add jwt token to dto
-		dto.setToken(jwtTokenService.generateJWTToken(entity.getUsername()));
+    @Autowired
+    private SecurityUtils securityUtils;
 
-		// add refresh token to dto
-		Token token = jwtTokenService.generateRefreshToken(entity);
-		dto.setRefreshToken(token.getKey());
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-		return dto;
-	}
-	
-	@Override
-	public void createAccount(CreatingAccountForm form) {
-		// create account (status = block & role = employee)
-		Account entity = convertObjectToObject(form, Account.class);
-		entity.setPassword(passwordEncoder.encode(form.getPassword()));
-		accountRepository.save(entity);
-		
-		// create token & send email
-		sendAccountRegistrationTokenViaEmail(entity.getUsername());
-	}
-	
-	@Override
-	public void sendAccountRegistrationTokenViaEmail(String username) {
-		// get account
-		Account account = accountRepository.findByUsername(username);
-		// create new token
-		Token newRegistrationToken = tokenService.generateAccountRegistrationToken(account);
-		// send email
-		emailService.sendActiveAccountRegistrationEmail(account, newRegistrationToken.getKey());
-	}
+    @Override
+    public LoginInfoDTO login(String username) throws AccountBlockException {
+        // get entity
+        Account entity = accountService.getAccountByUsername(username);
 
-	@Override
-	public void activeAccount(String registrationToken) {
-		Token token = tokenService.getRegistrationTokenByKey(registrationToken);
-		
-		// active account
-		Account account = token.getAccount();
-		account.setStatus(Status.ACTIVE);
-		account.setUpdatedDateTime(new Date());
-		accountRepository.save(account);
-		
-		// delete registration token
-		tokenService.deleteAccountRegistrationToken(account);
-	}
+        if (entity.getStatus() == Status.BLOCK) {
+            throw new AccountBlockException("Your account is blocked!");
+        }
 
-	@Override
-	public void sendAccountForgotPasswordTokenViaEmail(String usernameOrEmail) {
-		// get account
-		Account account = accountRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail);
-		// create new token
-		Token newForgotPasswordToken = tokenService.generateForgotPasswordToken(account);
-		// send email
-		emailService.sendForgotPasswordEmail(account, newForgotPasswordToken.getKey());
-	}
+        // convert entity to dto
+        LoginInfoDTO dto = convertObjectToObject(entity, LoginInfoDTO.class);
 
-	@Override
-	public String getUsernameFromForgotPasswordToken(String forgotPasswordToken) {
-		Token token = tokenService.getForgotPasswordTokenByKey(forgotPasswordToken);
-		return token.getAccount().getUsername();
-	}
-	
-	@Override
-	public void resetPassword(ResetPasswordForm form) {
-		Token token = tokenService.getForgotPasswordTokenByKey(form.getForgotPasswordToken());
-		
-		// reset password
-		Account account = token.getAccount();
-		account.setPassword(passwordEncoder.encode(form.getNewPassword()));
-		account.setUpdatedDateTime(new Date());
-		account.setLastChangePasswordDateTime(new Date());
-		accountRepository.save(account);
-		
-		// delete forgot password token
-		tokenService.deleteForgotPasswordToken(account);
-		
-		// delete old refresh token
-		jwtTokenService.deleteRefreshToken(account);
-	}
+        // add jwt token to dto
+        dto.setToken(jwtTokenService.generateJWTToken(entity.getUsername()));
 
-	@Override
-	public void changePassword(ChangePasswordForm form) {
-		// change password
-		Account account = securityUtils.getCurrentAccountLogin();
-		account.setPassword(passwordEncoder.encode(form.getNewPassword()));
-		account.setUpdatedDateTime(new Date());
-		account.setLastChangePasswordDateTime(new Date());
-		accountRepository.save(account);
+        // add refresh token to dto
+        Token token = jwtTokenService.generateRefreshToken(entity);
+        dto.setRefreshToken(token.getKey());
 
-		// delete old refresh token
-		jwtTokenService.deleteRefreshToken(account);
-		
-		// send email
-		emailService.sendChangePasswordEmail(account);
-	}
+        return dto;
+    }
+
+    @Override
+    public void createAccount(CreatingAccountForm form) {
+        // create account (status = block & role = employee)
+        Account entity = convertObjectToObject(form, Account.class);
+        entity.setPassword(passwordEncoder.encode(form.getPassword()));
+        accountRepository.save(entity);
+
+        // create token & send email
+        sendAccountRegistrationTokenViaEmail(entity.getUsername());
+    }
+
+    @Override
+    public void sendAccountRegistrationTokenViaEmail(String username) {
+        // get account
+        Account account = accountRepository.findByUsername(username);
+        // create new token
+        Token newRegistrationToken = tokenService.generateAccountRegistrationToken(account);
+        // send email
+        emailService.sendActiveAccountRegistrationEmail(account, newRegistrationToken.getKey());
+    }
+
+    @Override
+    public void activeAccount(String registrationToken) {
+        Token token = tokenService.getRegistrationTokenByKey(registrationToken);
+
+        // active account
+        Account account = token.getAccount();
+        account.setStatus(Status.ACTIVE);
+        account.setUpdatedDateTime(new Date());
+        accountRepository.save(account);
+
+        // delete registration token
+        tokenService.deleteAccountRegistrationToken(account);
+    }
+
+    @Override
+    public void sendAccountForgotPasswordTokenViaEmail(String usernameOrEmail) {
+        // get account
+        Account account = accountRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail);
+        // create new token
+        Token newForgotPasswordToken = tokenService.generateForgotPasswordToken(account);
+        // send email
+        emailService.sendForgotPasswordEmail(account, newForgotPasswordToken.getKey());
+    }
+
+    @Override
+    public String getUsernameFromForgotPasswordToken(String forgotPasswordToken) {
+        Token token = tokenService.getForgotPasswordTokenByKey(forgotPasswordToken);
+        return token.getAccount().getUsername();
+    }
+
+    @Override
+    public void resetPassword(ResetPasswordForm form) {
+        Token token = tokenService.getForgotPasswordTokenByKey(form.getForgotPasswordToken());
+
+        // reset password
+        Account account = token.getAccount();
+        account.setPassword(passwordEncoder.encode(form.getNewPassword()));
+        account.setUpdatedDateTime(new Date());
+        account.setLastChangePasswordDateTime(new Date());
+        accountRepository.save(account);
+
+        // delete forgot password token
+        tokenService.deleteForgotPasswordToken(account);
+
+        // delete old refresh token
+        jwtTokenService.deleteRefreshToken(account);
+    }
+
+    @Override
+    public void changePassword(ChangePasswordForm form) {
+        // change password
+        Account account = securityUtils.getCurrentAccountLogin();
+        account.setPassword(passwordEncoder.encode(form.getNewPassword()));
+        account.setUpdatedDateTime(new Date());
+        account.setLastChangePasswordDateTime(new Date());
+        accountRepository.save(account);
+
+        // delete old refresh token
+        jwtTokenService.deleteRefreshToken(account);
+
+        // send email
+        emailService.sendChangePasswordEmail(account);
+    }
 }

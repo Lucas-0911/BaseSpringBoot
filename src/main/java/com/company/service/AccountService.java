@@ -1,33 +1,32 @@
 package com.company.service;
 
-import java.util.List;
-
-import org.springframework.data.domain.Sort;
-import org.springframework.security.core.userdetails.UserDetailsService;
-
 import com.company.model.dto.account.AccountNoDepartmentDTO;
 import com.company.model.dto.account.ImportedAccountInfoDTO;
 import com.company.model.dto.department.DepartmentDTO;
 import com.company.model.entity.Account;
+import org.springframework.data.domain.Sort;
+import org.springframework.security.core.userdetails.UserDetailsService;
+
+import java.util.List;
 
 public interface AccountService extends UserDetailsService {
 
-	Account getAccountByUsername(String username);
+    Account getAccountByUsername(String username);
 
-	Account getAccountById(Integer id);
+    Account getAccountById(Integer id);
 
-	boolean isAccountExistsByUsername(String username);
+    boolean isAccountExistsByUsername(String username);
 
-	boolean isAccountExistsByEmail(String email);
+    boolean isAccountExistsByEmail(String email);
 
-	boolean isOldPasswordCorrect(String oldPassword);
+    boolean isOldPasswordCorrect(String oldPassword);
 
-	boolean isAccountExistsById(Integer id);
-	
-	DepartmentDTO getDepartmentInfo();
+    boolean isAccountExistsById(Integer id);
 
-	List<AccountNoDepartmentDTO> getAllAccountsNoDepartment(Sort sort, String q);
-	
-	List<ImportedAccountInfoDTO> getInfoAccountByUsername(List<String> usernames);
+    DepartmentDTO getDepartmentInfo();
+
+    List<AccountNoDepartmentDTO> getAllAccountsNoDepartment(Sort sort, String q);
+
+    List<ImportedAccountInfoDTO> getInfoAccountByUsername(List<String> usernames);
 
 }
