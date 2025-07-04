@@ -20,7 +20,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "`Group_Account`")
+@Table(name = "`group_account`")
 public class GroupAccount implements Serializable {
 
     private static final long serialVersionUID = 1L;

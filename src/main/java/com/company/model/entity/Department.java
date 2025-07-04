@@ -24,7 +24,7 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "`Department`")
+@Table(name = "`department`")
 @NoArgsConstructor
 @SuperBuilder
 public class Department implements Serializable {

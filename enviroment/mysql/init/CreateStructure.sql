@@ -71,7 +71,7 @@ CREATE TABLE `token`(
                         `key` 					VARCHAR(100) NOT NULL UNIQUE,
                         `type` 					ENUM('REFRESH_TOKEN','REGISTER','FORGOT_PASSWORD') NOT NULL,
                         expired_date_time		DATETIME NOT NULL,
-                        FOREIGN KEY(account_id) REFERENCES `Account`(id) ON DELETE CASCADE
+                        FOREIGN KEY(account_id) REFERENCES `account`(id) ON DELETE CASCADE
 );
 
 

@@ -23,7 +23,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "`Group`")
+@Table(name = "`group`")
 public class Group implements Serializable {
 
     private static final long serialVersionUID = 1L;
